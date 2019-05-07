@@ -135,12 +135,12 @@ func (d DID) String() string {
 	return d.ToAddress().String()
 }
 
-// BigInt returns DID in bigInt.
+// BigInt returns DID as bigInt.
 func (d DID) BigInt() *big.Int {
 	return utils.ByteSliceToBigInt(d[:])
 }
 
-// Equal checks if d == other.
+// Equal checks if two DIDs are identical.
 func (d DID) Equal(other DID) bool {
 	for i := range d {
 		if d[i] != other[i] {
@@ -155,7 +155,7 @@ func NewDID(address common.Address) DID {
 	return DID(address)
 }
 
-// NewDIDFromString returns a DID based on a hex string.
+// NewDIDFromString returns a DID based on a hexadecimal string.
 func NewDIDFromString(address string) (DID, error) {
 	if !common.IsHexAddress(address) {
 		return DID{}, ErrMalformedAddress
@@ -163,7 +163,7 @@ func NewDIDFromString(address string) (DID, error) {
 	return DID(common.HexToAddress(address)), nil
 }
 
-// NewDIDsFromStrings converts hex ids to DIDs.
+// NewDIDsFromStrings converts hexadecimal ids to DIDs.
 func NewDIDsFromStrings(ids []string) ([]DID, error) {
 	var cids []DID
 	for _, id := range ids {
@@ -238,7 +238,7 @@ type ServiceDID interface {
 	CurrentP2PKey(did DID) (ret string, err error)
 
 	// GetClientsP2PURLs returns p2p urls associated with each centIDs.
-	// will error out at first failure.
+	// GetClientsP2PURLs will error out at first failure.
 	GetClientsP2PURLs(dids []*DID) ([]string, error)
 
 	// GetKeysByPurpose returns keys grouped by purpose from the identity contract.
@@ -299,7 +299,7 @@ func (idk *key) String() string {
 	return fmt.Sprintf("%s", peerID.Pretty())
 }
 
-// IDKey represents a key pair.
+// IDKey represents a public/private key pair.
 type IDKey struct {
 	PublicKey  []byte
 	PrivateKey []byte
