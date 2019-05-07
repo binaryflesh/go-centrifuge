@@ -10,7 +10,7 @@ const (
 	// Ok no error code
 	Ok Code = 0
 
-	// Unknown operation cancelled due  unhandled error
+	// Unknown operation cancelled due to unhandled error
 	Unknown Code = 1
 
 	// NetworkMismatch operation cancelled due to Node network mismatch
