@@ -30,7 +30,7 @@ func TestHTTPCode(t *testing.T) {
 
 	for _, c := range tests {
 		if got := HTTPCode(c.code); got != c.want {
-			t.Fatalf("HTTP code mismatch: %d != %d.", got, c.want)
+			t.Fatalf("HTTP status code mismatch: %d != %d.", got, c.want)
 		}
 	}
 }
