@@ -81,7 +81,7 @@ func (qs *Server) Start(ctx context.Context, wg *sync.WaitGroup, startupErr chan
 	qs.lock.Unlock()
 
 	<-ctx.Done()
-	log.Info("Shutting down Queue server with context done.")
+	log.Info("Shutting down Queue server with context 'done'.")
 	qs.lock.Lock()
 	qs.queue.StopWorker()
 	qs.lock.Unlock()
