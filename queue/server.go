@@ -81,11 +81,11 @@ func (qs *Server) Start(ctx context.Context, wg *sync.WaitGroup, startupErr chan
 	qs.lock.Unlock()
 
 	<-ctx.Done()
-	log.Info("Shutting down Queue server with context done")
+	log.Info("Shutting down Queue server with context done.")
 	qs.lock.Lock()
 	qs.queue.StopWorker()
 	qs.lock.Unlock()
-	log.Info("Queue server stopped")
+	log.Info("Queue server stopped.")
 }
 
 // RegisterTaskType registers a task type on the queue server
@@ -108,7 +108,7 @@ func (qs *Server) EnqueueJob(taskName string, params map[string]interface{}) (Ta
 
 func (qs *Server) enqueueJob(name string, params map[string]interface{}, settings *gocelery.TaskSettings) (TaskResult, error) {
 	if qs.queue == nil {
-		return nil, errors.New("queue hasn't been initialised")
+		return nil, errors.New("Queue hasn't been initialised.")
 	}
 
 	return qs.queue.Delay(gocelery.Task{
