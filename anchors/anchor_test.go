@@ -35,17 +35,17 @@ func TestNewAnchorId(t *testing.T) {
 		{
 			"smallerSlice",
 			utils.RandomSlice(AnchorIDLength - 1),
-			"invalid length byte slice provided for anchorID",
+			"Invalid length byte slice provided for anchorID.",
 		},
 		{
 			"largerSlice",
 			utils.RandomSlice(AnchorIDLength + 1),
-			"invalid length byte slice provided for anchorID",
+			"Invalid length byte slice provided for anchorID.",
 		},
 		{
 			"nilSlice",
 			nil,
-			"invalid length byte slice provided for anchorID",
+			"Invalid length byte slice provided for anchorID.",
 		},
 	}
 	for _, test := range tests {
@@ -65,17 +65,17 @@ func TestNewDocRoot(t *testing.T) {
 		{
 			"smallerSlice",
 			utils.RandomSlice(DocumentRootLength - 1),
-			"invalid length byte slice provided for docRoot",
+			"Invalid length byte slice provided for docRoot.",
 		},
 		{
 			"largerSlice",
 			utils.RandomSlice(DocumentRootLength + 1),
-			"invalid length byte slice provided for docRoot",
+			"Invalid length byte slice provided for docRoot.",
 		},
 		{
 			"nilSlice",
 			nil,
-			"invalid length byte slice provided for docRoot",
+			"Invalid length byte slice provided for docRoot.",
 		},
 	}
 	for _, test := range tests {
