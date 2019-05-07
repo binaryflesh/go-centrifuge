@@ -39,9 +39,9 @@ func newService(config Config, anchorContract anchorRepositoryContract, queue *q
 	return &service{config: config, anchorRepositoryContract: anchorContract, client: client, queue: queue, txManager: txManager}
 }
 
-// HasValidPreCommit checks if the given anchorID has a valid pre-commit
+// HasValidPreCommit checks if the given anchorID has a valid pre-commit.
 func (s *service) HasValidPreCommit(anchorID AnchorID) bool {
-	// Ignoring cancelFunc as code will block until response or timeout is triggered
+	// Ignoring cancelFunc; Code will block until the response or timeout are triggered.
 	opts, _ := s.client.GetGethCallOpts(false)
 	r, err := s.anchorRepositoryContract.HasValidPreCommit(opts, anchorID.BigInt())
 	if err != nil {
@@ -52,7 +52,7 @@ func (s *service) HasValidPreCommit(anchorID AnchorID) bool {
 
 // GetAnchorData takes an anchorID and returns the corresponding documentRoot from the chain.
 func (s *service) GetAnchorData(anchorID AnchorID) (docRoot DocumentRoot, anchoredTime time.Time, err error) {
-	// Ignoring cancelFunc as code will block until response or timeout is triggered
+	// Ignoring cancelFunc; Code will block until the response or timeout are triggered.
 	opts, _ := s.client.GetGethCallOpts(false)
 	r, err := s.anchorRepositoryContract.GetAnchorById(opts, anchorID.BigInt())
 	if err != nil {
@@ -67,7 +67,7 @@ func (s *service) GetAnchorData(anchorID AnchorID) (docRoot DocumentRoot, anchor
 	return r.DocumentRoot, time.Unix(blk.Time().Int64(), 0), err
 }
 
-// PreCommitAnchor will call the transaction PreCommit on the smart contract
+// PreCommitAnchor will call the transaction PreCommit on the smart contract.
 func (s *service) PreCommitAnchor(ctx context.Context, anchorID AnchorID, signingRoot DocumentRoot) (confirmations chan bool, err error) {
 	did, err := getDID(ctx)
 	if err != nil {
@@ -93,7 +93,7 @@ func (s *service) PreCommitAnchor(ctx context.Context, anchorID AnchorID, signin
 		return confirmations, err
 	}
 
-	log.Infof("Add Anchor to Pre-commit %s from did:%s", anchorID.String(), did.ToAddress().String())
+	log.Infof("Add Anchor to Pre-commit %s from DID:%s.", anchorID.String(), did.ToAddress().String())
 	_, done, err := s.txManager.ExecuteWithinJob(ctx, did, jobID, "Check Job for anchor commit",
 		s.ethereumTX(opts, s.anchorRepositoryContract.PreCommit, pc.AnchorID.BigInt(), pc.SigningRoot))
 	if err != nil {
@@ -103,7 +103,7 @@ func (s *service) PreCommitAnchor(ctx context.Context, anchorID AnchorID, signin
 	return done, nil
 }
 
-// ethereumTX is submitting an Ethereum transaction and starts a task to wait for the transaction result
+// ethereumTX submits an Ethereum transaction and initiates task to wait for the transaction result.
 func (s service) ethereumTX(opts *bind.TransactOpts, contractMethod interface{}, params ...interface{}) func(accountID identity.DID, jobID jobs.JobID, txMan jobs.Manager, errOut chan<- error) {
 	return func(accountID identity.DID, jobID jobs.JobID, txMan jobs.Manager, errOut chan<- error) {
 		ethTX, err := s.client.SubmitTransactionWithRetries(contractMethod, opts, params...)
@@ -127,8 +127,8 @@ func (s service) ethereumTX(opts *bind.TransactOpts, contractMethod interface{},
 	}
 }
 
-// getDID returns DID from context.Account
-// TODO use did.NewDIDFromContext as soon as IDConfig is deleted
+// getDID returns DID from context.Account.
+// TODO: use did.NewDIDFromContext as soon as IDConfig is deleted
 func getDID(ctx context.Context) (identity.DID, error) {
 	tc, err := contextutil.Account(ctx)
 	if err != nil {
@@ -142,7 +142,7 @@ func getDID(ctx context.Context) (identity.DID, error) {
 	return identity.NewDID(common.BytesToAddress(addressByte)), nil
 }
 
-// CommitAnchor will send a commit transaction to Ethereum.
+// CommitAnchor will send commit transaction to Ethereum.
 func (s *service) CommitAnchor(ctx context.Context, anchorID AnchorID, documentRoot DocumentRoot, proof [32]byte) (chan bool, error) {
 	did, err := getDID(ctx)
 	if err != nil {
@@ -170,7 +170,7 @@ func (s *service) CommitAnchor(ctx context.Context, anchorID AnchorID, documentR
 
 	cd := NewCommitData(h.Number.Uint64(), anchorID, documentRoot, proof)
 
-	log.Infof("Add Anchor to Commit %s from did:%s", anchorID.String(), did.ToAddress().String())
+	log.Infof("Add Anchor to Commit %s from DID:%s.", anchorID.String(), did.ToAddress().String())
 	_, done, err := s.txManager.ExecuteWithinJob(ctx, did, jobID, "Check Job for anchor commit",
 		s.ethereumTX(opts, s.anchorRepositoryContract.Commit, cd.AnchorID.BigInt(), cd.DocumentRoot, cd.DocumentProof))
 	if err != nil {
