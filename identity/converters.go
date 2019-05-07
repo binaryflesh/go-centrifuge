@@ -55,7 +55,7 @@ func DIDsToBytes(dids ...*DID) [][]byte {
 	return bytes
 }
 
-// BytesToDIDs converts bytes to DIDs
+// BytesToDIDs converts bytes to DIDs.
 func BytesToDIDs(bytes ...[]byte) ([]*DID, error) {
 	dids := make([]*DID, len(bytes), len(bytes))
 	for i, bs := range bytes {
@@ -73,7 +73,7 @@ func BytesToDIDs(bytes ...[]byte) ([]*DID, error) {
 	return dids, nil
 }
 
-// DIDsPointers returns the pointers to DIDs
+// DIDsPointers returns the pointers to DIDs.
 func DIDsPointers(dids ...DID) []*DID {
 	var pdids []*DID
 	for _, did := range dids {
@@ -89,7 +89,7 @@ func DIDsPointers(dids ...DID) []*DID {
 	return pdids
 }
 
-// FromPointerDIDs return pointer DIDs to value DIDs
+// FromPointerDIDs return pointer DIDs to value DIDs.
 func FromPointerDIDs(pdids ...*DID) []DID {
 	dids := make([]DID, len(pdids), len(pdids))
 	for i, pdid := range pdids {
@@ -105,7 +105,7 @@ func FromPointerDIDs(pdids ...*DID) []DID {
 	return dids
 }
 
-// RemoveDuplicateDIDs removes duplicate DIDs
+// RemoveDuplicateDIDs removes duplicate DIDs.
 func RemoveDuplicateDIDs(dids []DID) []DID {
 	m := make(map[string]struct{})
 	var res []DID
